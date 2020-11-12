@@ -27,6 +27,7 @@ const Container = styled.div`
 export default function Home() {
   return (
     <Root>
+      
       <Header />
       <Container>
         <Content />
