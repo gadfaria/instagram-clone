@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FlexCenter } from "../utils/HelperStyles";
+import Modal from "./Modal";
 import Post from "./Post";
 
 const Root = styled.div`
@@ -36,7 +37,7 @@ const ProfileNickname = styled.span`
   padding-top: 5px;
 `;
 
-const Teste = styled.div`
+const ImageBorder = styled.div`
   width: 70px;
   height: 70px;
   border-radius: 70px;
@@ -47,18 +48,31 @@ const Teste = styled.div`
 `;
 
 export default function Stories() {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <Root>
       <Story>
-        <Teste>
+        <ImageBorder
+          onClick={() => {
+            setShowModal(true);
+          }}
+        >
           <ProfileImage
             draggable="false"
             src="https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-19/s150x150/120349966_335632174540767_2000384469165519766_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&_nc_ohc=9u7zDVnfTdgAX-HWwN6&_nc_tp=25&oh=aa0c11ad366ac6e9e1a3bc9fe781e111&oe=5FD62524"
           />
-        </Teste>
+        </ImageBorder>
 
         <ProfileNickname>Jao</ProfileNickname>
       </Story>
+
+      <Modal
+        closeModal={() => {
+          setShowModal(false);
+        }}
+        showModal={showModal}
+      />
     </Root>
   );
 }
