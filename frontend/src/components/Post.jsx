@@ -5,7 +5,6 @@ import { FlexCenter } from "../utils/HelperStyles";
 
 const Root = styled.div`
   height: 850px;
-  /* background: green; */
   border: 1px solid rgba(219, 219, 219);
   border-radius: 3px;
   background: #ffffff;
@@ -37,7 +36,6 @@ const ProfileNickname = styled.span`
   margin-left: 14px;
   font-weight: 500;
   font-size: 14px;
-  /* font-family: -apple-system; */
 `;
 
 const ImagePost = styled.div`
@@ -52,7 +50,6 @@ const Image = styled.img`
 
 const Buttons = styled.div`
   display: flex;
-  /* flex-direction: column; */
   justify-content: space-between;
   align-items: center;
   padding: 0px 12px;
@@ -65,7 +62,6 @@ const Button = styled.div`
 
 const SendComment = styled.div`
   display: flex;
-  /* flex-direction: column; */
   justify-content: space-between;
   align-items: center;
   padding: 0px 12px;

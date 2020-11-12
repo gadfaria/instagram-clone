@@ -2,13 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FlexCenter } from "../utils/HelperStyles";
 import Modal from "./Modal";
-import Post from "./Post";
 
 const Root = styled.div`
-  /* display: grid; */
-  /* width: 100%; */
   height: 118px;
-  /* background: green; */
   border: 1px solid rgba(219, 219, 219);
   border-radius: 3px;
   background: #ffffff;
@@ -41,8 +37,6 @@ const ImageBorder = styled.div`
   width: 70px;
   height: 70px;
   border-radius: 70px;
-  /* padding: 1rem; */
-  /* position: relative; */
   background: linear-gradient(to right, red, purple);
   ${FlexCenter}
 `;

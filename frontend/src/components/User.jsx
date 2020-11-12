@@ -1,12 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { FlexCenter } from "../utils/HelperStyles";
 
 const Root = styled.div`
   width: 293px;
   height: 100px;
   margin: 28px 13px;
-  /* background: yellow; */
   background: #fafafa;
   display: flex;
   align-items: center;
@@ -24,19 +22,15 @@ const ProfileNickname = styled.span`
   font-weight: 600;
   font-size: 14px;
   color: rgb(38, 38, 38);
-  /* font-family: -apple-system; */
 `;
 const ProfileName = styled.span`
   margin-left: 14px;
   font-weight: 400;
   font-size: 14px;
   color: rgb(142, 142, 142);
-
-  /* font-family: -apple-system; */
 `;
 
 const Profile = styled.div`
-  /* font-family: -apple-system; */
   display: flex;
   flex-direction: column;
 `;

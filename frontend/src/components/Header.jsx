@@ -18,7 +18,7 @@ const Root = styled.div`
 
 const Logo = styled.a`
   grid-area: Logo;
-  ${FlexCenter}/* margin-left: 1vw; */
+  ${FlexCenter}
 `;
 
 const Search = styled.input`

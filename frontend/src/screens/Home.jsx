@@ -13,11 +13,9 @@ const Root = styled.div`
   flex-direction: column;
   background: #fafafa;
   overflow-y: auto;
-  /* background: blue; */
 `;
 
 const Container = styled.div`
-  /* background: red; */
   background: #fafafa;
   display: flex;
   height: 100%;
@@ -27,7 +25,6 @@ const Container = styled.div`
 export default function Home() {
   return (
     <Root>
-      
       <Header />
       <Container>
         <Content />

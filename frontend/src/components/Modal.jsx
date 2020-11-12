@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styled from "styled-components";
+import { FlexCenter } from "../utils/HelperStyles";
+import { Close, LeftArrow, RightArrow } from "../utils/icons";
 
 const BackdropDiv = styled(motion.div)`
   position: fixed;
@@ -10,27 +12,61 @@ const BackdropDiv = styled(motion.div)`
   height: 100%;
   background: #262626;
   z-index: 1;
+  ${FlexCenter}
 `;
 
 const ModalDiv = styled(motion.div)`
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  background: white;
-  border-radius: 10px;
-  text-align: center;
+  height: 100vh;
+  width: 500px;
+  background: #262626;
+  position: relative;
 `;
 
-const ButtonDiv = styled.button`
-  color: #444;
-  border-color: #444;
-  font-weight: bold;
-  margin-top: 20px;
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 25px 5px 10px 10px;
 `;
 
-const TextDiv = styled.p`
-  color: #444;
-  font-weight: bold;
+const Profile = styled.div`
+  ${FlexCenter}
+`;
+
+const ProfilePicture = styled.img`
+  width: 32px;
+  height: 32px;
+  border: 1px solid #bebebe;
+  border-radius: 32px;
+`;
+
+const ProfileNickname = styled.span`
+  margin-left: 14px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #fdfdfd;
+`;
+
+const Image = styled.img`
+  width: 500px;
+`;
+
+const Button = styled(motion.div)`
+  cursor: pointer;
+  margin: 0px 10px;
+`;
+
+const Bar = styled(motion.div)`
+  background-color: #868686;
+  height: 5px;
+  margin: 10px 0px;
+  z-index: 9;
+`;
+
+const ProgressBar = styled(motion.div)`
+  background-color: #fafafa;
+  height: 5px;
+  margin: 10px 0px;
+  z-index: 10;
 `;
 
 const BackdropAnimation = {
@@ -39,15 +75,35 @@ const BackdropAnimation = {
 };
 
 const ModalAnimation = {
-  hidden: { y: "30vh", opacity: 0 },
+  hidden: { opacity: 0 },
   visible: {
-    y: "30vh",
     opacity: 1,
-    transition: { delay: 0.5 },
+    transition: { delay: 0.2 },
   },
 };
 
+const image = [
+  {
+    url:
+      "https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-15/e35/120861467_127251072171742_751241220667977987_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&_nc_cat=110&_nc_ohc=NmKB1v4zUbsAX_Oz4Sb&tp=18&oh=0f600a74a2026e04ed16d154b0682627&oe=5FAF4826",
+  },
+  {
+    url:
+      "https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-15/e35/121092662_847710366011951_5322055496833457004_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=mxqCUs-7x-8AX8PfnYw&tp=18&oh=94b225f1f63ea8f19aa435653d16f6ea&oe=5FAF78E6",
+  },
+  {
+    url:
+      "https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-15/e35/120861467_127251072171742_751241220667977987_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&_nc_cat=110&_nc_ohc=NmKB1v4zUbsAX_Oz4Sb&tp=18&oh=0f600a74a2026e04ed16d154b0682627&oe=5FAF4826",
+  },
+  {
+    url:
+      "https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-15/e35/121092662_847710366011951_5322055496833457004_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=mxqCUs-7x-8AX8PfnYw&tp=18&oh=94b225f1f63ea8f19aa435653d16f6ea&oe=5FAF78E6",
+  },
+];
+
 export default function Modal(props) {
+  const [position, setPosition] = useState(0);
+
   return (
     <AnimatePresence>
       {props.showModal && (
@@ -60,16 +116,61 @@ export default function Modal(props) {
           animate="visible"
           exit="hidden"
         >
-          <ModalDiv variants={ModalAnimation}>
-            <TextDiv>Teste do modal</TextDiv>
-            <ButtonDiv
+          {position > 0 ? (
+            <Button
+              variants={ModalAnimation}
               onClick={() => {
-                props.closeModal();
+                setPosition(position - 1);
               }}
             >
-              Botaozao maneiro
-            </ButtonDiv>
+              <LeftArrow />
+            </Button>
+          ) : (
+            <Button>
+              <div style={{ width: "24px", height: "24px" }} />
+            </Button>
+          )}
+          <ModalDiv variants={ModalAnimation}>
+            <Header>
+              <Profile>
+                <ProfilePicture
+                  draggable="false"
+                  src="https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-19/s150x150/120349966_335632174540767_2000384469165519766_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&amp;_nc_ohc=9u7zDVnfTdgAX-HWwN6&amp;_nc_tp=25&amp;oh=aa0c11ad366ac6e9e1a3bc9fe781e111&amp;oe=5FD62524"
+                />
+                <ProfileNickname>zapelimbrasil</ProfileNickname>
+              </Profile>
+              <Button
+                onClick={() => {
+                  props.closeModal();
+                }}
+              >
+                <Close />
+              </Button>
+            </Header>
+
+            <Bar>
+              <ProgressBar
+                animate={{ width: ((position + 1) / image.length) * 100 + "%" }}
+                transition={{ duration: 0.2 }}
+              ></ProgressBar>
+            </Bar>
+
+            <Image src={image[position].url} />
           </ModalDiv>
+          {position < image.length - 1 ? (
+            <Button
+              variants={ModalAnimation}
+              onClick={() => {
+                setPosition(position + 1);
+              }}
+            >
+              <RightArrow />
+            </Button>
+          ) : (
+            <Button>
+              <div style={{ width: "24px", height: "24px" }} />
+            </Button>
+          )}
         </BackdropDiv>
       )}
     </AnimatePresence>
