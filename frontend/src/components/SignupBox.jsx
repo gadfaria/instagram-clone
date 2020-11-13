@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { SERVER_URL } from "../utils/const";
 import { FlexCenter } from "../utils/HelperStyles";
 import Input from "./Input";
 
@@ -48,11 +49,38 @@ const InputHidden = styled.input`
   display: none;
 `;
 
+async function doSignUp(form) {
+  try {
+    let response = await fetch(`${SERVER_URL}/user`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: form.name,
+        username: form.username,
+        password: form.password,
+      }),
+    });
+    const responseObject = await response.json();
+    if (response.status === 200) {
+      console.log("aeeeeeeeeeeeeeeeeeeee carai");
+    } else if (response.status === 400) {
+      console.log(responseObject.error);
+    }
+  } catch (err) {
+    console.log("Deu nao");
+  }
+}
+
 export default function SignupBox() {
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [image, setImage] = useState("");
+  const [form, setForm] = useState({
+    image: "",
+    name: "",
+    username: "",
+    password: "",
+  });
 
   return (
     <Root>
@@ -70,14 +98,14 @@ export default function SignupBox() {
         }}
       >
         <ImageDiv onClick={() => document.getElementById("gallery")?.click()}>
-          {image === "" ? (
+          {form.image === "" ? (
             <Image
               src={
                 "https://scontent-ort2-1.cdninstagram.com/v/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=scontent-ort2-1.cdninstagram.com&_nc_ohc=2p8Oa_c8q90AX_YA6AL&oh=fab41393078616124036615c67f58ba9&oe=5FD5790F&ig_cache_key=YW5vbnltb3VzX3Byb2ZpbGVfcGlj.2"
               }
             />
           ) : (
-            <Image src={image} />
+            <Image src={form.image} />
           )}
         </ImageDiv>
 
@@ -91,7 +119,7 @@ export default function SignupBox() {
               const reader = new FileReader();
               reader.readAsDataURL(file);
               reader.onload = () => {
-                setImage(reader.result);
+                setForm({ ...form, image: reader.result });
               };
             }
           }}
@@ -100,31 +128,35 @@ export default function SignupBox() {
 
       <Input
         label={"Full Name"}
-        value={name}
+        value={form.name}
         type="text"
-        onChange={(evt) => setName(evt.target.value)}
+        onChange={(evt) => setForm({ ...form, name: evt.target.value })}
       />
 
       <Input
         label={"Username"}
-        value={username}
+        value={form.username}
         type="text"
-        onChange={(evt) => setUsername(evt.target.value)}
+        onChange={(evt) => setForm({ ...form, username: evt.target.value })}
       />
 
       <Input
         label={"Password"}
-        value={password}
+        value={form.password}
         type="password"
-        onChange={(evt) => setPassword(evt.target.value)}
+        onChange={(evt) => setForm({ ...form, password: evt.target.value })}
       />
 
       <Button
         disabled={
-          !(username.length > 0 && name.length > 0 && password.length > 6)
+          !(
+            form.username.length > 0 &&
+            form.name.length > 0 &&
+            form.password.length > 5
+          )
         }
-        onClick={() => {
-          console.log("Login");
+        onClick={async () => {
+          await doSignUp(form);
         }}
       >
         Log In
