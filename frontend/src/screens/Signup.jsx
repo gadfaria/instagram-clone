@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import SignupBox from "../components/SignupBox";
 import { FlexCenter } from "../utils/HelperStyles";
+import { useHistory } from "react-router-dom";
 
 const Root = styled.div`
   box-sizing: border-box;
@@ -35,11 +36,20 @@ const Button = styled.span`
 `;
 
 export default function Signup() {
+  let history = useHistory();
+  
   return (
     <Root>
-      <SignupBox />
+      <SignupBox history={history} />
       <Login>
-        Have an account? <Button> Log In </Button>
+        Have an account?
+        <Button
+          onClick={() => {
+            history.push("/");
+          }}
+        >
+          Log In
+        </Button>
       </Login>
     </Root>
   );

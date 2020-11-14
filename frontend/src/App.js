@@ -1,5 +1,6 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import SnackbarProvider from 'react-simple-snackbar'
 
 import Home from "./screens/Home";
 import Login from "./screens/Login";
@@ -8,7 +9,7 @@ import "./App.css";
 
 function App() {
   return (
-    <div>
+    <SnackbarProvider>
       <Router>
         <Switch>
           <Route path="/signup">
@@ -22,7 +23,7 @@ function App() {
           </Route>
         </Switch>
       </Router>
-    </div>
+    </SnackbarProvider>
   );
 }
 

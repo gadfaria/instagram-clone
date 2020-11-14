@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useSnackbar } from "react-simple-snackbar";
+import { SERVER_URL } from "../utils/const";
 import { FlexCenter } from "../utils/HelperStyles";
 import Input from "./Input";
 
@@ -25,11 +27,48 @@ const Button = styled.button`
 `;
 
 const Image = styled.img`
-  width:200px;
+  width: 200px;
   padding-bottom: 60px;
 `;
 
-export default function LoginBox() {
+async function doLogin(username, password, openSnackbar) {
+  try {
+    let response = await fetch(`${SERVER_URL}/login`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    });
+    const responseObject = await response.json();
+    if (response.status === 200) {
+      localStorage.setItem(
+        "@instagram/user",
+        JSON.stringify({
+          name: responseObject.user.name,
+          id: responseObject.user.id,
+          username: responseObject.user.username,
+          token: responseObject.token,
+        })
+      );
+      openSnackbar("Login successful");
+      return true;
+    } else {
+      openSnackbar(responseObject.error.message);
+      return false;
+    }
+  } catch (err) {
+    return false;
+  }
+}
+
+export default function LoginBox(props) {
+  const { history } = props;
+  const [openSnackbar] = useSnackbar();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -56,9 +95,10 @@ export default function LoginBox() {
       />
 
       <Button
-        disabled={!(username.length > 0 && password.length > 6)}
-        onClick={() => {
-          console.log("Login");
+        disabled={!(username.length > 0 && password.length > 5)}
+        onClick={async () => {
+          if (await doLogin(username, password, openSnackbar))
+            history.replace("/home");
         }}
       >
         Log In

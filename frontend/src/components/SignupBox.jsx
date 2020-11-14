@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useSnackbar } from "react-simple-snackbar";
 import { SERVER_URL } from "../utils/const";
 import { FlexCenter } from "../utils/HelperStyles";
 import Input from "./Input";
@@ -49,7 +50,7 @@ const InputHidden = styled.input`
   display: none;
 `;
 
-async function doSignUp(form) {
+async function doSignUp(form, openSnackbar) {
   try {
     let response = await fetch(`${SERVER_URL}/user`, {
       method: "POST",
@@ -65,16 +66,20 @@ async function doSignUp(form) {
     });
     const responseObject = await response.json();
     if (response.status === 200) {
-      console.log("aeeeeeeeeeeeeeeeeeeee carai");
-    } else if (response.status === 400) {
-      console.log(responseObject.error);
+      openSnackbar("Registration successful");
+      return true;
+    } else {
+      openSnackbar(responseObject.error.message);
+      return false;
     }
   } catch (err) {
-    console.log("Deu nao");
+    return false;
   }
 }
 
-export default function SignupBox() {
+export default function SignupBox(props) {
+  const { history } = props;
+  const [openSnackbar] = useSnackbar();
   const [form, setForm] = useState({
     image: "",
     name: "",
@@ -156,7 +161,7 @@ export default function SignupBox() {
           )
         }
         onClick={async () => {
-          await doSignUp(form);
+          if (await doSignUp(form, openSnackbar)) history.push("/");
         }}
       >
         Log In

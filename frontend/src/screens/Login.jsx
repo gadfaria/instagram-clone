@@ -4,6 +4,7 @@ import styled from "styled-components";
 import ImagesLogin from "../components/ImagesLogin";
 import LoginBox from "../components/LoginBox";
 import { FlexCenter } from "../utils/HelperStyles";
+import { useHistory } from "react-router-dom";
 
 const Root = styled.div`
   box-sizing: border-box;
@@ -42,14 +43,23 @@ const Button = styled.span`
 `;
 
 export default function Login() {
+  let history = useHistory();
+
   return (
     <AnimatePresence>
       <Root>
         <ImagesLogin />
         <Box>
-          <LoginBox />
+          <LoginBox history={history} />
           <SignUp>
-            Don't have an account? <Button> Sign up </Button>
+            Don't have an account?
+            <Button
+              onClick={() => {
+                history.push("/signup");
+              }}
+            >
+              Sign up
+            </Button>
           </SignUp>
         </Box>
       </Root>

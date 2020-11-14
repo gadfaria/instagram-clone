@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FlexCenter } from "../utils/HelperStyles";
 import Modal from "./Modal";
+import Plus from "../assets/plus.png";
 
 const Root = styled.div`
   height: 118px;
@@ -41,11 +42,38 @@ const ImageBorder = styled.div`
   ${FlexCenter}
 `;
 
+const AddDiv = styled.div`
+  margin-bottom: 15px;
+  width: 66px;
+  height: 66px;
+  border-radius: 70px;
+  background: #fafafa;
+  ${FlexCenter}
+  border: 1px solid rgba(219, 219, 219);
+`;
+
+const AddImage = styled.img`
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 66px;
+`;
+
 export default function Stories() {
   const [showModal, setShowModal] = useState(false);
 
   return (
     <Root>
+      <Story>
+        <AddDiv
+          onClick={() => {
+            // setShowModal(true);
+          }}
+        >
+          <AddImage draggable="false" src={Plus} />
+        </AddDiv>
+      </Story>
+
       <Story>
         <ImageBorder
           onClick={() => {

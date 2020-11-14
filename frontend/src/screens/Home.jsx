@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 import Header from "../components/Header";
 import Content from "../components/Content";
 import User from "../components/User";
@@ -23,12 +24,23 @@ const Container = styled.div`
 `;
 
 export default function Home() {
-  return (
+  let history = useHistory();
+  let user = JSON.parse(localStorage.getItem("@instagram/user"));
+  let [verification, setVerification] = useState(false);
+
+  useEffect(() => {
+    if (!user) history.replace("/");
+    setVerification(true);
+  }, []);
+
+  return !verification ? (
+    <> </>
+  ) : (
     <Root>
       <Header />
       <Container>
         <Content />
-        <User />
+        <User user={user} history={history} />
       </Container>
     </Root>
   );
