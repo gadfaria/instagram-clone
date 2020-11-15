@@ -48,7 +48,7 @@ const expressService = {
         next();
       });
 
-      server.use(bodyParser.json());
+      server.use(bodyParser.json({ limit: "50mb" }));
       server.use(routes);
 
       server.listen(process.env.SERVER_PORT);

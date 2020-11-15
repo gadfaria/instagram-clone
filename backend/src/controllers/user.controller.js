@@ -1,12 +1,16 @@
 import * as Yup from "yup";
 import User from "../models/User";
 import { Errors } from "../utils/errors";
+import uuid from "uuid";
+import awsService from "../services/aws.service";
 
 //Yup is a JavaScript schema builder for value parsing and validation.
 
 let userController = {
   add: async (req, res) => {
     try {
+      // console.log(req.body);
+      // console.log(req.body.image);
       const schema = Yup.object().shape({
         name: Yup.string().required(),
         username: Yup.string().required(),
@@ -21,6 +25,16 @@ let userController = {
       const userExists = await User.findOne({
         where: { username },
       });
+
+      if (req.body.image) {
+        const imageUuid = uuid.v4();
+        await awsService.uploadFileAsBase64(
+          req.body.image,
+          "jpg",
+          "image/jpeg",
+          imageUuid
+        );
+      }
 
       if (userExists)
         return res.status(400).json({ error: Errors.USER_ALREADY_EXISTS });
