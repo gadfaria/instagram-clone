@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FlexCenter } from "../utils/HelperStyles";
 import Modal from "./Modal";
 import Plus from "../assets/plus.png";
+import defaultProfile from "../assets/default_profile.jpg";
+import { IMG_URL, SERVER_URL } from "../utils/const";
 
 const Root = styled.div`
   height: 118px;
@@ -59,8 +61,27 @@ const AddImage = styled.img`
   border-radius: 66px;
 `;
 
-export default function Stories() {
+export default function Stories(props) {
   const [showModal, setShowModal] = useState(false);
+  const [users, setUsers] = useState(null);
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    (async () => {
+      const response = await fetch(`${SERVER_URL}/story`, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${props.user.token}`,
+        },
+      });
+
+      const responseObject = await response.json();
+      if (response.status === 200) {
+        setUsers(responseObject);
+      }
+    })();
+  }, []);
 
   return (
     <Root>
@@ -74,27 +95,39 @@ export default function Stories() {
         </AddDiv>
       </Story>
 
-      <Story>
-        <ImageBorder
-          onClick={() => {
-            setShowModal(true);
-          }}
-        >
-          <ProfileImage
-            draggable="false"
-            src="https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-19/s150x150/120349966_335632174540767_2000384469165519766_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&_nc_ohc=9u7zDVnfTdgAX-HWwN6&_nc_tp=25&oh=aa0c11ad366ac6e9e1a3bc9fe781e111&oe=5FD62524"
-          />
-        </ImageBorder>
+      {console.log("aaa", users)}
+      {users &&
+        users.map((user, index) => {
+          return (
+            <Story>
+              <ImageBorder
+                onClick={() => {
+                  setIndex(index);
+                  setShowModal(true);
+                }}
+              >
+                <ProfileImage
+                  draggable="false"
+                  src={
+                    user.img_profile
+                      ? `${IMG_URL}/${user.img_profile}.jpg`
+                      : defaultProfile
+                  }
+                />
+              </ImageBorder>
 
-        <ProfileNickname>Jao</ProfileNickname>
-      </Story>
+              <ProfileNickname>{user.name}</ProfileNickname>
+            </Story>
+          );
+        })}
 
-      <Modal
+      {users && <Modal
+        user={users[index]}
         closeModal={() => {
           setShowModal(false);
         }}
         showModal={showModal}
-      />
+      />}
     </Root>
   );
 }

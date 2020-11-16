@@ -4,6 +4,7 @@ import { useSnackbar } from "react-simple-snackbar";
 import { SERVER_URL } from "../utils/const";
 import { FlexCenter } from "../utils/HelperStyles";
 import Input from "./Input";
+import logoInsta from "../assets/logo-insta-login.png";
 
 const Root = styled.div`
   height: 380px;
@@ -53,6 +54,7 @@ async function doLogin(username, password, openSnackbar) {
           id: responseObject.user.id,
           username: responseObject.user.username,
           token: responseObject.token,
+          img_profile: responseObject.user.img_profile,
         })
       );
       openSnackbar("Login successful");
@@ -74,11 +76,7 @@ export default function LoginBox(props) {
 
   return (
     <Root>
-      <Image
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png"
-        alt=""
-        loading="lazy"
-      />
+      <Image src={logoInsta} alt="" loading="lazy" />
 
       <Input
         label={"Username"}

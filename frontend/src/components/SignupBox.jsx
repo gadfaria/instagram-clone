@@ -4,6 +4,8 @@ import { useSnackbar } from "react-simple-snackbar";
 import { SERVER_URL } from "../utils/const";
 import { FlexCenter } from "../utils/HelperStyles";
 import Input from "./Input";
+import defaultProfile from "../assets/default_profile.jpg";
+import logoInsta from "../assets/logo-insta-login.png";
 
 const Root = styled.div`
   height: 500px;
@@ -62,6 +64,7 @@ async function doSignUp(form, openSnackbar) {
         name: form.name,
         username: form.username,
         password: form.password,
+        image: form.image,
       }),
     });
     const responseObject = await response.json();
@@ -89,11 +92,7 @@ export default function SignupBox(props) {
 
   return (
     <Root>
-      <Logo
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png"
-        alt=""
-        loading="lazy"
-      />
+      <Logo src={logoInsta} alt="" loading="lazy" />
 
       <div
         style={{
@@ -104,11 +103,7 @@ export default function SignupBox(props) {
       >
         <ImageDiv onClick={() => document.getElementById("gallery")?.click()}>
           {form.image === "" ? (
-            <Image
-              src={
-                "https://scontent-ort2-1.cdninstagram.com/v/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=scontent-ort2-1.cdninstagram.com&_nc_ohc=2p8Oa_c8q90AX_YA6AL&oh=fab41393078616124036615c67f58ba9&oe=5FD5790F&ig_cache_key=YW5vbnltb3VzX3Byb2ZpbGVfcGlj.2"
-              }
-            />
+            <Image src={defaultProfile} />
           ) : (
             <Image src={form.image} />
           )}
@@ -164,7 +159,7 @@ export default function SignupBox(props) {
           if (await doSignUp(form, openSnackbar)) history.push("/");
         }}
       >
-        Log In
+        Sign Up
       </Button>
     </Root>
   );

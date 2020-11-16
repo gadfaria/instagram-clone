@@ -14,10 +14,10 @@ const Posts = styled.div`
   margin-top: 25px;
 `;
 
-export default function Content() {
+export default function Content(props) {
   return (
     <Root>
-      <Stories />
+      <Stories user={props.user} />
       <Posts>
         <Post></Post>
         <Post></Post>

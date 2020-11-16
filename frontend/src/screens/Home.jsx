@@ -39,7 +39,7 @@ export default function Home() {
     <Root>
       <Header />
       <Container>
-        <Content />
+        <Content user={user} />
         <User user={user} history={history} />
       </Container>
     </Root>

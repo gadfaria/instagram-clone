@@ -9,8 +9,6 @@ import awsService from "../services/aws.service";
 let userController = {
   add: async (req, res) => {
     try {
-      // console.log(req.body);
-      // console.log(req.body.image);
       const schema = Yup.object().shape({
         name: Yup.string().required(),
         username: Yup.string().required(),
@@ -26,6 +24,9 @@ let userController = {
         where: { username },
       });
 
+      if (userExists)
+        return res.status(400).json({ error: Errors.USER_ALREADY_EXISTS });
+
       if (req.body.image) {
         const imageUuid = uuid.v4();
         await awsService.uploadFileAsBase64(
@@ -34,10 +35,8 @@ let userController = {
           "image/jpeg",
           imageUuid
         );
+        req.body.img_profile = imageUuid;
       }
-
-      if (userExists)
-        return res.status(400).json({ error: Errors.USER_ALREADY_EXISTS });
 
       const user = await User.create(req.body);
 

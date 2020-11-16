@@ -18,7 +18,7 @@ module.exports = {
         unique: true,
         type: Sequelize.STRING,
       },
-      img_url: {
+      img_profile: {
         allowNull: true,
         unique: true,
         type: Sequelize.STRING,

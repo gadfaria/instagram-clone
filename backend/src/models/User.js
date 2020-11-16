@@ -7,7 +7,7 @@ class User extends Model {
       {
         name: Sequelize.STRING,
         username: Sequelize.STRING,
-        img_url: Sequelize.STRING,
+        img_profile: Sequelize.STRING,
         password: Sequelize.VIRTUAL,
         password_hash: Sequelize.STRING,
       },
@@ -27,7 +27,9 @@ class User extends Model {
     return this;
   }
 
-  // static associate(models) {}
+  static associate(models) {
+    this.hasMany(models.Story, { foreignKey: "userId" });
+  }
 
   checkPassword(password) {
     return bcrypt.compare(password, this.password_hash);

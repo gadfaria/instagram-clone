@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { SERVER_URL } from "../utils/const";
+import defaultProfile from "../assets/default_profile.jpg";
+import { IMG_URL, SERVER_URL } from "../utils/const";
 
 const Root = styled.div`
   width: 293px;
@@ -71,7 +72,11 @@ export default function User(props) {
     <Root>
       <ProfilePicture
         draggable="false"
-        src="https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-19/s150x150/120349966_335632174540767_2000384469165519766_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&amp;_nc_ohc=9u7zDVnfTdgAX-HWwN6&amp;_nc_tp=25&amp;oh=aa0c11ad366ac6e9e1a3bc9fe781e111&amp;oe=5FD62524"
+        src={
+          user.img_profile
+            ? `${IMG_URL}/${user.img_profile}.jpg`
+            : defaultProfile
+        }
       />
       <Profile>
         <ProfileNickname>{user.username}</ProfileNickname>

@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import styled from "styled-components";
 import { FlexCenter } from "../utils/HelperStyles";
 import { Close, LeftArrow, RightArrow } from "../utils/icons";
+import defaultProfile from "../assets/default_profile.jpg";
+import { IMG_URL } from "../utils/const";
 
 const BackdropDiv = styled(motion.div)`
   position: fixed;
@@ -82,27 +84,29 @@ const ModalAnimation = {
   },
 };
 
-const image = [
-  {
-    url:
-      "https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-15/e35/120861467_127251072171742_751241220667977987_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&_nc_cat=110&_nc_ohc=NmKB1v4zUbsAX_Oz4Sb&tp=18&oh=0f600a74a2026e04ed16d154b0682627&oe=5FAF4826",
-  },
-  {
-    url:
-      "https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-15/e35/121092662_847710366011951_5322055496833457004_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=mxqCUs-7x-8AX8PfnYw&tp=18&oh=94b225f1f63ea8f19aa435653d16f6ea&oe=5FAF78E6",
-  },
-  {
-    url:
-      "https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-15/e35/120861467_127251072171742_751241220667977987_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&_nc_cat=110&_nc_ohc=NmKB1v4zUbsAX_Oz4Sb&tp=18&oh=0f600a74a2026e04ed16d154b0682627&oe=5FAF4826",
-  },
-  {
-    url:
-      "https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-15/e35/121092662_847710366011951_5322055496833457004_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=mxqCUs-7x-8AX8PfnYw&tp=18&oh=94b225f1f63ea8f19aa435653d16f6ea&oe=5FAF78E6",
-  },
-];
+// const image = [
+//   {
+//     url:
+//       "https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-15/e35/120861467_127251072171742_751241220667977987_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&_nc_cat=110&_nc_ohc=NmKB1v4zUbsAX_Oz4Sb&tp=18&oh=0f600a74a2026e04ed16d154b0682627&oe=5FAF4826",
+//   },
+//   {
+//     url:
+//       "https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-15/e35/121092662_847710366011951_5322055496833457004_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=mxqCUs-7x-8AX8PfnYw&tp=18&oh=94b225f1f63ea8f19aa435653d16f6ea&oe=5FAF78E6",
+//   },
+//   {
+//     url:
+//       "https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-15/e35/120861467_127251072171742_751241220667977987_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&_nc_cat=110&_nc_ohc=NmKB1v4zUbsAX_Oz4Sb&tp=18&oh=0f600a74a2026e04ed16d154b0682627&oe=5FAF4826",
+//   },
+//   {
+//     url:
+//       "https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-15/e35/121092662_847710366011951_5322055496833457004_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=mxqCUs-7x-8AX8PfnYw&tp=18&oh=94b225f1f63ea8f19aa435653d16f6ea&oe=5FAF78E6",
+//   },
+// ];
 
 export default function Modal(props) {
+  const { user } = props;
   const [position, setPosition] = useState(0);
+  const [images, setImage] = useState(user.Stories);
 
   return (
     <AnimatePresence>
@@ -135,9 +139,13 @@ export default function Modal(props) {
               <Profile>
                 <ProfilePicture
                   draggable="false"
-                  src="https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-19/s150x150/120349966_335632174540767_2000384469165519766_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&amp;_nc_ohc=9u7zDVnfTdgAX-HWwN6&amp;_nc_tp=25&amp;oh=aa0c11ad366ac6e9e1a3bc9fe781e111&amp;oe=5FD62524"
+                  src={
+                    user.img_profile
+                      ? `${IMG_URL}/${user.img_profile}.jpg`
+                      : defaultProfile
+                  }
                 />
-                <ProfileNickname>zapelimbrasil</ProfileNickname>
+                <ProfileNickname>{user.name}</ProfileNickname>
               </Profile>
               <Button
                 onClick={() => {
@@ -150,14 +158,14 @@ export default function Modal(props) {
 
             <Bar>
               <ProgressBar
-                animate={{ width: ((position + 1) / image.length) * 100 + "%" }}
+                animate={{ width: ((position + 1) / images.length) * 100 + "%" }}
                 transition={{ duration: 0.2 }}
               ></ProgressBar>
             </Bar>
 
-            <Image src={image[position].url} />
+            <Image src={`${IMG_URL}/${images[position].uuid}.jpg`} />
           </ModalDiv>
-          {position < image.length - 1 ? (
+          {position < images.length - 1 ? (
             <Button
               variants={ModalAnimation}
               onClick={() => {
