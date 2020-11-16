@@ -158,7 +158,9 @@ export default function Modal(props) {
 
             <Bar>
               <ProgressBar
-                animate={{ width: ((position + 1) / images.length) * 100 + "%" }}
+                animate={{
+                  width: ((position + 1) / images.length) * 100 + "%",
+                }}
                 transition={{ duration: 0.2 }}
               ></ProgressBar>
             </Bar>

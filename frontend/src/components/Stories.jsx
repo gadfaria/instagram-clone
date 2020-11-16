@@ -5,6 +5,7 @@ import Modal from "./Modal";
 import Plus from "../assets/plus.png";
 import defaultProfile from "../assets/default_profile.jpg";
 import { IMG_URL, SERVER_URL } from "../utils/const";
+import { useSnackbar } from "react-simple-snackbar";
 
 const Root = styled.div`
   height: 118px;
@@ -13,6 +14,7 @@ const Root = styled.div`
   background: #ffffff;
   display: flex;
   align-items: center;
+  overflow-x: auto;
 `;
 
 const Story = styled.div`
@@ -34,6 +36,11 @@ const ProfileNickname = styled.span`
   font-size: 14px;
   color: rgb(38, 38, 38);
   padding-top: 5px;
+  width: 80px;
+  ${FlexCenter}
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 const ImageBorder = styled.div`
@@ -61,10 +68,39 @@ const AddImage = styled.img`
   border-radius: 66px;
 `;
 
+const InputHidden = styled.input`
+  display: none;
+`;
+
+async function saveStory(image, token, openSnackbar, setReload) {
+  try {
+    let response = await fetch(`${SERVER_URL}/story`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        image: image,
+      }),
+    });
+    if (response.status === 200) {
+      openSnackbar("Stories successful saved");
+      return true;
+    }
+  } catch (err) {
+    return false;
+  }
+}
+
 export default function Stories(props) {
   const [showModal, setShowModal] = useState(false);
   const [users, setUsers] = useState(null);
-  const [index, setIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [reload, setReload] = useState(false);
+  const [openSnackbar] = useSnackbar();
+  const [userStories, setUserStories] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -79,30 +115,49 @@ export default function Stories(props) {
       const responseObject = await response.json();
       if (response.status === 200) {
         setUsers(responseObject);
+        setLoading(false);
       }
     })();
-  }, []);
+  }, [reload]);
 
-  return (
+  return loading ? (
+    <Root></Root>
+  ) : (
     <Root>
       <Story>
-        <AddDiv
-          onClick={() => {
-            // setShowModal(true);
-          }}
-        >
+        <AddDiv onClick={() => document.getElementById("gallery")?.click()}>
           <AddImage draggable="false" src={Plus} />
+          <InputHidden
+            id={"gallery"}
+            type="file"
+            accept="image/png, image/jpeg"
+            onChange={(evt) => {
+              if (evt.target.files) {
+                let file = evt.target.files[0];
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = async () => {
+                  if (
+                    await saveStory(
+                      reader.result,
+                      props.user.token,
+                      openSnackbar
+                    )
+                  )
+                    setReload(!reload);
+                };
+              }
+            }}
+          />
         </AddDiv>
       </Story>
-
-      {console.log("aaa", users)}
       {users &&
-        users.map((user, index) => {
-          return (
+        users.map((user) => {
+          return user.Stories.length > 0 ? (
             <Story>
               <ImageBorder
                 onClick={() => {
-                  setIndex(index);
+                  setUserStories(user);
                   setShowModal(true);
                 }}
               >
@@ -118,16 +173,20 @@ export default function Stories(props) {
 
               <ProfileNickname>{user.name}</ProfileNickname>
             </Story>
+          ) : (
+            <></>
           );
         })}
-
-      {users && <Modal
-        user={users[index]}
-        closeModal={() => {
-          setShowModal(false);
-        }}
-        showModal={showModal}
-      />}
+      {userStories != null && (
+        <Modal
+          user={userStories}
+          closeModal={() => {
+            setShowModal(false);
+            setUserStories(null);
+          }}
+          showModal={showModal}
+        />
+      )}
     </Root>
   );
 }
