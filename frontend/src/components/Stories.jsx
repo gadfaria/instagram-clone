@@ -6,6 +6,15 @@ import Plus from "../assets/plus.png";
 import defaultProfile from "../assets/default_profile.jpg";
 import { IMG_URL, SERVER_URL } from "../utils/const";
 import { useSnackbar } from "react-simple-snackbar";
+import {
+  CarouselProvider,
+  Slider,
+  Slide,
+  ButtonBack,
+  ButtonNext,
+  Image,
+} from "pure-react-carousel";
+import "pure-react-carousel/dist/react-carousel.es.css";
 
 const Root = styled.div`
   height: 118px;
@@ -14,7 +23,6 @@ const Root = styled.div`
   background: #ffffff;
   display: flex;
   align-items: center;
-  overflow-x: auto;
 `;
 
 const Story = styled.div`
@@ -124,59 +132,88 @@ export default function Stories(props) {
     <Root></Root>
   ) : (
     <Root>
-      <Story>
-        <AddDiv onClick={() => document.getElementById("gallery")?.click()}>
-          <AddImage draggable="false" src={Plus} />
-          <InputHidden
-            id={"gallery"}
-            type="file"
-            accept="image/png, image/jpeg"
-            onChange={(evt) => {
-              if (evt.target.files) {
-                let file = evt.target.files[0];
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = async () => {
-                  if (
-                    await saveStory(
-                      reader.result,
-                      props.user.token,
-                      openSnackbar
-                    )
-                  )
-                    setReload(!reload);
-                };
-              }
-            }}
-          />
-        </AddDiv>
-      </Story>
-      {users &&
-        users.map((user) => {
-          return user.Stories.length > 0 ? (
+      <CarouselProvider
+        style={{
+          width: "100%",
+          height: "118px",
+          marginTop: "30px",
+        }}
+        naturalSlideWidth={100}
+        naturalSlideHeight={125}
+        totalSlides={users.length + 1}
+        visibleSlides={5}
+      >
+        {/* <ButtonBack style={{ width: "20px", position: "absolute", zIndex: 9 }}>
+          Back
+        </ButtonBack> */}
+        <Slider style={{ outline: "none" }}>
+          <Slide style={{marginTop: "5px"}}>
             <Story>
-              <ImageBorder
-                onClick={() => {
-                  setUserStories(user);
-                  setShowModal(true);
-                }}
+              <AddDiv
+                onClick={() => document.getElementById("gallery")?.click()}
               >
-                <ProfileImage
-                  draggable="false"
-                  src={
-                    user.img_profile
-                      ? `${IMG_URL}/${user.img_profile}.jpg`
-                      : defaultProfile
-                  }
+                <AddImage draggable="false" src={Plus} />
+                <InputHidden
+                  id={"gallery"}
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  onChange={(evt) => {
+                    if (evt.target.files) {
+                      let file = evt.target.files[0];
+                      const reader = new FileReader();
+                      reader.readAsDataURL(file);
+                      reader.onload = async () => {
+                        if (
+                          await saveStory(
+                            reader.result,
+                            props.user.token,
+                            openSnackbar
+                          )
+                        )
+                          setReload(!reload);
+                      };
+                    }
+                  }}
                 />
-              </ImageBorder>
-
-              <ProfileNickname>{user.name}</ProfileNickname>
+              </AddDiv>
             </Story>
-          ) : (
-            <></>
-          );
-        })}
+          </Slide>
+
+          {users &&
+            users.map((user) => {
+              return user.Stories.length > 0 ? (
+                <Slide>
+                  <Story>
+                    <ImageBorder
+                      onClick={() => {
+                        setUserStories(user);
+                        setShowModal(true);
+                      }}
+                    >
+                      <Image style={{width:"66px",height:"66px", borderRadius:"66px"}}
+                        draggable="false"
+                        src={
+                          user.img_profile
+                            ? `${IMG_URL}/${user.img_profile}.jpg`
+                            : defaultProfile
+                        }
+                      />
+                    </ImageBorder>
+
+                    <ProfileNickname>{user.name}</ProfileNickname>
+                  </Story>
+                </Slide>
+              ) : (
+                <></>
+              );
+            })}
+          {/* <ButtonNext
+            style={{ left:100, width: "20px", position: "absolute", zIndex: 10 }}
+          >
+            Next
+          </ButtonNext> */}
+        </Slider>
+      </CarouselProvider>
       {userStories != null && (
         <Modal
           user={userStories}

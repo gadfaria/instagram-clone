@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { FlexCenter } from "../utils/HelperStyles";
 import { Heart, Compass, Direct, House } from "../utils/icons";
+import defaultProfile from "../assets/default_profile.jpg";
+import { IMG_URL } from "../utils/const";
 
 const Root = styled.div`
   display: grid;
@@ -48,7 +50,13 @@ const Button = styled.div`
   margin-left: 20px;
 `;
 
-export default function Header() {
+const ProfileImage = styled.img`
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+`;
+
+export default function Header(props) {
   return (
     <Root>
       <Logo href="#">
@@ -73,7 +81,14 @@ export default function Header() {
           <Heart />
         </Button>
         <Button>
-          <Heart />
+          <ProfileImage
+            draggable="false"
+            src={
+              props.user.img_profile
+                ? `${IMG_URL}/${props.user.img_profile}.jpg`
+                : defaultProfile
+            }
+          />
         </Button>
       </Buttons>
     </Root>

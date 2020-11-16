@@ -37,7 +37,7 @@ export default function Home() {
     <> </>
   ) : (
     <Root>
-      <Header />
+      <Header user={user} />
       <Container>
         <Content user={user} />
         <User user={user} history={history} />
