@@ -147,7 +147,7 @@ export default function Stories(props) {
           Back
         </ButtonBack> */}
         <Slider style={{ outline: "none" }}>
-          <Slide style={{marginTop: "5px"}}>
+          <Slide style={{ marginTop: "5px" }}>
             <Story>
               <AddDiv
                 onClick={() => document.getElementById("gallery")?.click()}
@@ -190,7 +190,14 @@ export default function Stories(props) {
                         setShowModal(true);
                       }}
                     >
-                      <Image style={{width:"66px",height:"66px", borderRadius:"66px",  cursor: "pointer", zIndex: 0}}
+                      <Image
+                        style={{
+                          width: "66px",
+                          height: "66px",
+                          borderRadius: "66px",
+                          cursor: "pointer",
+                          zIndex: 0,
+                        }}
                         draggable="false"
                         src={
                           user.img_profile
@@ -216,7 +223,14 @@ export default function Stories(props) {
       </CarouselProvider>
       {userStories != null && (
         <Modal
+          userId={props.user.id}
+          userToken={props.user.token}
           user={userStories}
+          reload={() => {
+            setShowModal(false);
+            setUserStories(null);
+            setReload(!reload);
+          }}
           closeModal={() => {
             setShowModal(false);
             setUserStories(null);

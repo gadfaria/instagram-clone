@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styled from "styled-components";
 import { FlexCenter } from "../utils/HelperStyles";
-import { Close, LeftArrow, RightArrow } from "../utils/icons";
+import { Close, DeleteIcon, LeftArrow, RightArrow } from "../utils/icons";
 import defaultProfile from "../assets/default_profile.jpg";
-import { IMG_URL } from "../utils/const";
+import { IMG_URL, SERVER_URL } from "../utils/const";
 
 const BackdropDiv = styled(motion.div)`
   position: fixed;
@@ -84,8 +84,30 @@ const ModalAnimation = {
   },
 };
 
+const DeleteButton = styled.div`
+  width: 25px;
+  margin: 5px 5px;
+  right: 0;
+  position: absolute;
+  cursor: pointer;
+`;
+
+async function deleteStory(imageId, token) {
+  let response = await fetch(`${SERVER_URL}/story/${imageId}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (response.status == 200) return true;
+  else return false;
+}
+
 export default function Modal(props) {
-  const { user } = props;
+  const { user, userId, userToken, reload } = props;
   const [position, setPosition] = useState(0);
   const [images, setImage] = useState(user.Stories);
 
@@ -93,9 +115,6 @@ export default function Modal(props) {
     <AnimatePresence>
       {props.showModal && (
         <BackdropDiv
-          onClick={() => {
-            console.log("aa");
-          }}
           variants={BackdropAnimation}
           initial="hidden"
           animate="visible"
@@ -145,7 +164,16 @@ export default function Modal(props) {
                 transition={{ duration: 0.2 }}
               ></ProgressBar>
             </Bar>
-
+            {userId === user.id && (
+              <DeleteButton
+                onClick={async () => {
+                  if (await deleteStory(images[position].id, userToken))
+                    reload();
+                }}
+              >
+                <DeleteIcon />
+              </DeleteButton>
+            )}
             <Image src={`${IMG_URL}/${images[position].uuid}.jpg`} />
           </ModalDiv>
           {position < images.length - 1 ? (
