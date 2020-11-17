@@ -99,21 +99,22 @@ const Date = styled.span`
   color: rgb(142, 142, 142);
 `;
 
-export default function Post() {
+export default function Post(props) {
+  const { post } = props;
   return (
     <Root>
       <Header>
         <Profile>
           <ProfilePicture
             draggable="false"
-            src="https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-19/s150x150/120349966_335632174540767_2000384469165519766_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&amp;_nc_ohc=9u7zDVnfTdgAX-HWwN6&amp;_nc_tp=25&amp;oh=aa0c11ad366ac6e9e1a3bc9fe781e111&amp;oe=5FD62524"
+            src={post.user.img_profile}
           />
-          <ProfileNickname>zapelimbrasil</ProfileNickname>
+          <ProfileNickname>{post.user.name}</ProfileNickname>
         </Profile>
         <ThreePoints />
       </Header>
       <ImagePost>
-        <Image src="https://instagram.fppy5-1.fna.fbcdn.net/v/t51.2885-15/e35/124317900_825301914870709_7874643191822657663_n.jpg?_nc_ht=instagram.fppy5-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=RWOExczAoG8AX8tSb46&tp=18&oh=d9ccdc23f7ccf09cb302b9c6fa9f6b5e&oe=5FD6F622" />
+        <Image src={post.image} />
       </ImagePost>
       <Buttons>
         <div style={{ display: "flex" }}>
@@ -131,17 +132,18 @@ export default function Post() {
       </Buttons>
       <Detail>
         <Comment>
-          <ProfileNickname>zapelimbrasil</ProfileNickname>
-          <Description>Teste teste</Description>
+          <ProfileNickname>{post.user.name}</ProfileNickname>
+          <Description>{post.description}</Description>
         </Comment>
-        <Comment>
-          <ProfileNickname>gabiru</ProfileNickname>
-          <Description>Teste teste</Description>
-        </Comment>
-        <Comment>
-          <ProfileNickname>gabiru2</ProfileNickname>
-          <Description>Teste teste</Description>
-        </Comment>
+        {post.comments.map((comment) => {
+          return (
+            <Comment>
+              <ProfileNickname>{comment.name}</ProfileNickname>
+              <Description>{comment.comment}</Description>
+            </Comment>
+          );
+        })}
+
         <Date>2 DAYS AGO</Date>
       </Detail>
       <SendComment>
