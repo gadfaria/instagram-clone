@@ -190,7 +190,7 @@ export default function Stories(props) {
                         setShowModal(true);
                       }}
                     >
-                      <Image style={{width:"66px",height:"66px", borderRadius:"66px"}}
+                      <Image style={{width:"66px",height:"66px", borderRadius:"66px",  cursor: "pointer", zIndex: 0}}
                         draggable="false"
                         src={
                           user.img_profile

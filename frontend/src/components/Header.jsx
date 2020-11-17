@@ -16,6 +16,7 @@ const Root = styled.div`
   width: 100%;
   position: absolute;
   top: 0;
+  z-index: 5;
 `;
 
 const Logo = styled.a`
