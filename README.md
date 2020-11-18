@@ -4,9 +4,9 @@ Projeto feito para processo seletivo.
 
 ## Back-end
 
-Para o desenvolvimento do back-end foi utilizado o [express-sequelize-boilerplate](https://github.com/gadfaria/express-sequelize-boilerplate) (Feito por mim). 
+Para o desenvolvimento do back-end foi utilizado o [express-sequelize-boilerplate](https://github.com/gadfaria/express-sequelize-boilerplate) (feito por mim). 
 
-Boilerplate criado com [Express](https://expressjs.com/pt-br/) e[Sequelize](https://sequelize.org/).
+Boilerplate criado com [Express](https://expressjs.com/pt-br/) e [Sequelize](https://sequelize.org/).
 
 O update de imagens foi feito utilizando o armazenamento [S3](https://aws.amazon.com/pt/s3/).
 
@@ -21,6 +21,8 @@ Feito com ReactJS utilizando principalmente as libs [Framer Motion](https://www.
 
 Para rodar o servidor é necessário setar algumas variáveis de ambiente no .env do back-end:
 
+| Option | Description |
+| ------ | ------ |
 | SERVER_PORT | Port the server will run on |
 | SERVER_JWT | true or false |
 | SERVER_JWT_SECRET | JWT secret |
@@ -35,7 +37,7 @@ Para rodar o servidor é necessário setar algumas variáveis de ambiente no .en
 | AWS_BUCKET | Bucket name |
 
 
-Em seguida carregar as migrations
+Em seguida carregar as migrations:
 ```bash
 yarn sequelize db:create
 ```
@@ -57,7 +59,7 @@ cp .env.example .env
 yarn dev
 ```
 
-Execução front-end
+Execução front-end:
 
 ```bash
 # Instalar as dependências
