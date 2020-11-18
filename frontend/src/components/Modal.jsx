@@ -102,7 +102,7 @@ async function deleteStory(imageId, token) {
     },
   });
 
-  if (response.status == 200) return true;
+  if (response.status === 200) return true;
   else return false;
 }
 

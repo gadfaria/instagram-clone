@@ -10,8 +10,6 @@ import {
   CarouselProvider,
   Slider,
   Slide,
-  ButtonBack,
-  ButtonNext,
   Image,
 } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
@@ -32,12 +30,12 @@ const Story = styled.div`
   padding: 0px 15px;
 `;
 
-const ProfileImage = styled.img`
-  cursor: pointer;
-  width: 66px;
-  height: 66px;
-  border-radius: 66px;
-`;
+// const ProfileImage = styled.img`
+//   cursor: pointer;
+//   width: 66px;
+//   height: 66px;
+//   border-radius: 66px;
+// `;
 
 const ProfileNickname = styled.span`
   font-weight: 400;
@@ -143,9 +141,6 @@ export default function Stories(props) {
         totalSlides={users.length + 1}
         visibleSlides={5}
       >
-        {/* <ButtonBack style={{ width: "20px", position: "absolute", zIndex: 9 }}>
-          Back
-        </ButtonBack> */}
         <Slider style={{ outline: "none" }}>
           <Slide style={{ marginTop: "5px" }}>
             <Story>
@@ -207,18 +202,13 @@ export default function Stories(props) {
                       />
                     </ImageBorder>
 
-                    <ProfileNickname>{user.name}</ProfileNickname>
+                    <ProfileNickname>{user.username}</ProfileNickname>
                   </Story>
                 </Slide>
               ) : (
                 <></>
               );
             })}
-          {/* <ButtonNext
-            style={{ left:100, width: "20px", position: "absolute", zIndex: 10 }}
-          >
-            Next
-          </ButtonNext> */}
         </Slider>
       </CarouselProvider>
       {userStories != null && (
