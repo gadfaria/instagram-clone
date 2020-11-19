@@ -5,6 +5,7 @@ import { SERVER_URL } from "../utils/const";
 import { FlexCenter } from "../utils/HelperStyles";
 import Input from "./Input";
 import logoInsta from "../assets/logo-insta-login.png";
+import CircleLoader from "./CircleLoader";
 
 const Root = styled.div`
   height: 380px;
@@ -25,6 +26,7 @@ const Button = styled.button`
   border-radius: 3px;
   outline: none;
   cursor: ${(props) => (!props.disabled ? "pointer" : "initial")};
+  ${FlexCenter}
 `;
 
 const Image = styled.img`
@@ -73,6 +75,7 @@ export default function LoginBox(props) {
   const [openSnackbar] = useSnackbar();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   return (
     <Root>
@@ -95,11 +98,14 @@ export default function LoginBox(props) {
       <Button
         disabled={!(username.length > 0 && password.length > 5)}
         onClick={async () => {
-          if (await doLogin(username, password, openSnackbar))
+          setLoading(true);
+          if (await doLogin(username, password, openSnackbar)) {
+            setLoading(false);
             history.replace("/home");
+          }
         }}
       >
-        Log In
+        {!loading ? "Log In" : <CircleLoader />}
       </Button>
     </Root>
   );
